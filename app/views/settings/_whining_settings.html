@@ -3,7 +3,7 @@
     <%
       selected_statuses = Setting.plugin_redmine_whining[:statuses] ? Setting.plugin_redmine_whining[:statuses].collect { |x| Integer(x)} : []
     %>
-    <%= select_tag("settings[statuses]", options_from_collection_for_select(IssueStatus.find(:all, :conditions => { :is_closed => 0 }), :id, :name, selected_statuses), :multiple => true) %>
+    <%= select_tag("settings[statuses]", options_from_collection_for_select(IssueStatus.find(:all, :conditions => { :is_closed => 'f' }), :id, :name, selected_statuses), :multiple => true) %>
 </p>
 
 <p>

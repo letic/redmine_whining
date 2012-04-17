@@ -63,7 +63,7 @@ class WhiningMailer < Mailer
     params = []
     IssuePriority.find(:all).each { |prio|
         delay = Setting.plugin_redmine_whining["delay_#{prio.id}".intern]
-        delay = Setting.plugin_redmine_whining[:delay_default] if not delay
+        delay = Setting.plugin_redmine_whining[:delay_default] if not delay && !delay.empty?
         delay = Integer(delay).day.until.to_date
         delay += 1 if delay.wday == 0
         delay += 2 if delay.wday == 6
