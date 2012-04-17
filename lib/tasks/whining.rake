@@ -54,7 +54,7 @@ class WhiningMailer < Mailer
   end
 
   def self.whinings(options={})
-    days = options[:days] || 7
+    days = options[:days]
 
     projects = EnabledModule.find(:all, :conditions => ["name = 'whining'"]).collect { |mod| mod.project_id }
     return if projects.length == 0
@@ -64,6 +64,9 @@ class WhiningMailer < Mailer
     IssuePriority.find(:all).each { |prio|
         delay = Setting.plugin_redmine_whining["delay_#{prio.id}".intern]
         delay = Setting.plugin_redmine_whining[:delay_default] if not delay && !delay.empty?
+        if not days || Integer(days) > Integer(delay)
+          days = delay
+        end
         delay = Integer(delay).day.until.to_date
         delay += 1 if delay.wday == 0
         delay += 2 if delay.wday == 6
